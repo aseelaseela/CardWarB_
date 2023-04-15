@@ -10,7 +10,7 @@
 using namespace std;
 namespace ariel
 {
-Game ::Game (Player &player1 ,Player &player2):p1(player1),p2(player2)
+Game ::Game (Player &player1 ,Player &player2):p1(player1),p2(player2),winner(nullptr),lastTurn(" "),log(" "),round(0),draws(0),numOfDraws(0),player1wins(0),player2wins(0)
 {
     this->round=0;
     this->numOfDraws=0;
@@ -24,7 +24,10 @@ Game ::Game (Player &player1 ,Player &player2):p1(player1),p2(player2)
     {
         throw invalid_argument("player 2 is already in the game ! ");
     }
-    
+     if(player2.theplayerinGame() || player1.theplayerinGame())
+    {
+        throw invalid_argument("wait until player finish the game ! ");
+    }
     vector<Card>cards;
     Suit suitarr[4]={Suit::Spades,Suit::Hearts,Suit::Clubs,Suit::Diamonds};
     for (int i = 0; i < 4; i++)
@@ -39,30 +42,15 @@ Game ::Game (Player &player1 ,Player &player2):p1(player1),p2(player2)
     std::shuffle(cards.begin(),cards.end(),g);
     while (!cards.empty())
     {
-        if(cards.size()%2==0){
+        if((int)cards.size()%2==0){
             player1.add(cards.back());
         }
         else player2.add(cards.back());
         cards.pop_back();
     }
     
-    player1.setplayerinGame(true);
-    player2.setplayerinGame(true);
-
-    /*
-    srand(time(0));
-    random_shuffle(cards.begin(),cards.end());
-    vector<Card> player1cards;
-    vector<Card> player2cards;
-    for (int k = 0; k< 26; k++)
-    {
-       player1cards.push_back(cards.at(k));
-       player2cards.push_back(cards.at(k+26));
-    }
-    player1.setcardsTaken(player1cards);
-    player2.setcardsTaken(player2cards);
-    while (!cards.empty())
-  */
+    this->p1.setplayerinGame(true);
+    this->p2.setplayerinGame(true);
    
 }
 void Game:: playTurn()
@@ -79,6 +67,11 @@ void Game:: playTurn()
             throw runtime_error("the game already ended ..");
           // throw invalid_argument("the game already ended ..");
         }
+        if (p1.stacksize()==0 && p2.stacksize()==0)
+        {
+             throw runtime_error("the game already ended ..");
+        }
+        
         int draw=0;
         int recent=0;
         this->lastTurn="  ";
@@ -92,7 +85,7 @@ void Game:: playTurn()
         this->draws++;
         this->numOfDraws++;
         this->lastTurn+="*Draws \n";
-         if(p1.stacksize()<2 || p2.stacksize()<2)
+         if(p1.stacksize()<=1 || p2.stacksize()<=1)
           {
         //split the cards on the table
              while (recent>0)
@@ -170,10 +163,6 @@ void Game:: playAll()
        playTurn();
     }
     
- //while (p1.theplayerinGame() && p2.theplayerinGame() && this->round<26)
- //{
-   // playTurn();
- //}
 }
 void Game:: printWiner()
 {

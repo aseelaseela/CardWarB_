@@ -21,14 +21,14 @@ class Player{
         int stacksize();
         //prints the amount of cards this player has won. 
         int cardesTaken();
-		void addcardesTaken();
+        void addcardesTaken();
+        Card& cardinHand();
       //  void setcardsTaken(int numOfCards);
         string getName();
         bool theplayerinGame();
         void setplayerinGame(bool playingOrno);
-		void add(Card &card);
-	    Card& cardinHand();
-		void removethecard();
+        void add(Card &card);
+        void removethecard();
 };
 }
 #endif

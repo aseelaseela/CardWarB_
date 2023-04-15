@@ -11,7 +11,7 @@ namespace ariel
     //prints the amount of cards left. should be 21 but can be less if a draw was played
     int Player :: stacksize()
     {
-        return this->cardstuck.size();
+        return (int)this->cardstuck.size();
     }
     //prints the amount of cards this player has won. 
     int Player :: cardesTaken()
@@ -35,7 +35,7 @@ namespace ariel
         this->playerinGame=playingOrno;
     }
     void Player ::add(Card &card)
-    {
+    { 
         bool flag=false;
         for (size_t i = 0; i < this->stacksize() ; i++)
         {
@@ -48,6 +48,7 @@ namespace ariel
         if(flag)
         this->cardstuck.push_back(card);
         else throw invalid_argument("the card existed");
+        
     }
      Card& Player :: cardinHand()
     {

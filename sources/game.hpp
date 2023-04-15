@@ -8,8 +8,8 @@ namespace ariel
 class Game
 {
     private : 
-    Player& p1;
-    Player& p2;
+    Player &p1;
+    Player &p2;
     std::string lastTurn;
     std::string log;
     int round;
@@ -21,7 +21,7 @@ class Game
 
 
     public :
-    Game(Player& p1 ,Player& p2);
+    Game(Player& pl1 ,Player& pl2);
     void playTurn();
     void printLastTurn();
     void playAll();
